@@ -4,7 +4,8 @@
   "description": "Command line application to keep track of employees",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seeds":"npm run seeds"
   },
   "repository": {
     "type": "git",

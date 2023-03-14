@@ -10,7 +10,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'password',
-    database: 'employees_db'
+    database: 'company_db'
 });
 db.connect(err =>{
     if (err) {
@@ -24,6 +24,7 @@ const main = () =>{
     inquirer.prompt([
         {
             type: 'list',
+            name: 'main',
             message:'What would you like to do?',
             choices: ['View All Departments','View All Roles', 'View All Employees', 'Add Department','Add Role', 'Add Employee', 'Update Employee Role','All Done!']
         }
@@ -68,12 +69,12 @@ viewAllDept = () =>{
 }
 //display all roles
 viewAllRoles = () =>{
-    console.log("Currently displaying all roles in the company");
+    console.table("Currently displaying all roles in the company");
     db.query("SELECT * FROM roles"), (err, results) => {
         if (err){
             throw err;
         }
-        console.log(results);
+        console.table(results);
         main();
     }
 }
