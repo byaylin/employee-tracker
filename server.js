@@ -30,7 +30,7 @@ const main = () =>{
         }
     ]).then((response) =>{
         console.log(response.continue);
-        switch(response.continue){
+        switch(response.main){
             case 'View All Departments':
                 viewAllDept();
                 break;
@@ -53,39 +53,39 @@ const main = () =>{
                 updateRole();
             case 'All Done!':
                 console.log("See you later");
-        }
-    })
-}
+            }
+        })
+    }
 //display all depts
 viewAllDept = () =>{
-    console.log("Currently displaying all department in the company");
-    db.query("SELECT * FROM department"), (err, results) => {
-        if (err){
-            throw err;
-        }
-        console.log(results);
-        main();
-    }
-}
-//display all roles
-viewAllRoles = () =>{
-    console.table("Currently displaying all roles in the company");
-    db.query("SELECT * FROM roles"), (err, results) => {
+    console.table("Currently displaying all department in the company");
+    db.query("SELECT * FROM department", (err, results) => {
         if (err){
             throw err;
         }
         console.table(results);
         main();
-    }
+    })
+}
+//display all roles
+viewAllRoles = () =>{
+    console.table("Currently displaying all roles in the company");
+    db.query("SELECT * FROM roles", (err, results) => {
+        if (err){
+            throw err;
+        }
+        console.table(results);
+        main();
+    })
 }
 //displays all employees
 viewAllEmployees = () => {
-    console.log("All employees of the company currently being shown");
+    console.table("All employees of the company currently being shown");
     db.query("SELECT * FROM employee", (err, results) =>{
         if (err){
             throw err;
         }
-        console.log(results);
+        console.table(results);
         main();
     });
 }
@@ -98,11 +98,11 @@ addDept = () => {
             message:'What is the name of the department to be added?'
         }
     ]).then((response => {
-        db.query('INSERT INTO department(name) VALUES (?)', response.dept, (err, results)=>{
+        db.query('INSERT INTO department (name) VALUES (?)', response.dept, (err, results)=>{
             if (err){
                 throw err
             }
-            console.log('New department added to database');
+            console.table('New department added to database');
             main();
         })
     }))
@@ -130,7 +130,7 @@ addRole = () => {
             if (err){
                 throw err
             }
-            console.log('New role added to database');
+            console.table('New role added to database');
             main();
         })
     }))
@@ -163,7 +163,7 @@ addEmployee = () => {
             if (err){
                 throw err
             }
-            console.log('New employee added to database');
+            console.table('New employee added to database');
             main();
         })
     }))
@@ -187,7 +187,7 @@ updateRole = () =>{
             if (err){
                 throw err
             }
-            console.log('Role has been updated');
+            console.table('Role has been updated');
             main();
         })
     })
