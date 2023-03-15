@@ -2,8 +2,8 @@
 const inquirer = require ('inquirer');
 const mysql = require ('mysql2');
 const table = require('console.table');
-const express = require('express');
-const { response } = require('express');
+//const express = require('express');
+//const { response } = require('express');
 
 //sql connection 
 const db = mysql.createConnection({
@@ -97,8 +97,9 @@ addDept = () => {
             name:'dept',
             message:'What is the name of the department to be added?'
         }
-    ]).then((response => {
-        db.query('INSERT INTO department (name) VALUES (?)', response.dept, (err, results)=>{
+    ])
+    .then((response => {
+        db.query('INSERT INTO department (deptName) VALUES (?)', response.dept, (err, results)=>{
             if (err){
                 throw err
             }
@@ -116,17 +117,18 @@ addRole = () => {
             message:'What is the name of the role to be added?'
         },
         {
-            type: 'input',
+            type: 'number',
             name:'salary',
             message:'What is the salary of the role?'
         },
         {
-            type: 'input',
+            type: 'number',
             name:'deptId',
             message:'What is the department id of this role?'
         }
-    ]).then((response => {
-        db.query('INSERT INTO role(title, salary, department_id) VALUES (?, ?, ?)', [response.role, response.salary, response.deptId], (err, results)=>{
+    ])
+    .then((response => {
+        db.query('INSERT INTO roles(title, salary, department_id) VALUES (?, ?, ?)', [response.role, response.salary, response.deptId], (err, results)=>{
             if (err){
                 throw err
             }
@@ -154,12 +156,13 @@ addEmployee = () => {
             message:'What is their role?'
         },
         {
-            type: 'input',
+            type: 'number',
             name:'manager',
             message:'Who is their manager? Please enter manager ID'
         }
-    ]).then((response => {
-        db.query('INSERT INTO employee(first_name, last_name, manager_id) VALUES (?, ?, ?)', [response.firstName, response.lastName, response.manager], (err, results)=>{
+    ])
+    .then((response => {
+        db.query('INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [response.firstName, response.lastName, response.role, response.manager], (err, results)=>{
             if (err){
                 throw err
             }
@@ -172,17 +175,17 @@ addEmployee = () => {
 updateRole = () =>{
     inquirer.prompt([
         {
-            type: 'input',
+            type: 'number',
             name:'employee',
-            message:'Enter the first name of the employee you would like to update',
+            message:'Enter the employee id number',
         },
         {
-            type: 'list',
+            type: 'number',
             name:'role',
-            message:'What is their new role?',
-            choices:['Salesperson', 'Sales Lead', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead', 'Lawyer']
+            message:'Enter new role id'
         }
-    ]).then((response) => {
+    ])
+    .then((response) => {
         db.query('UPDATE employee SET role_id = ? WHERE id = ?',[response.employee, response.role], (err, results) =>{
             if (err){
                 throw err
